@@ -2,7 +2,8 @@ import React from "react";
 import SearchForm from "./components/SearchForm";
 import MovieContainer from "./components/MovieContainer";
 import "./App.css";
-
+import WithLoading from "./components/WithLoading";
+const WithLoadingList = WithLoading(MovieContainer);
 class App extends React.Component {
   state = {
     movieList: [
@@ -37,8 +38,14 @@ class App extends React.Component {
     ],
     isModalRendred: false,
     searchBar: "",
-    rating: ""
+    rating: "",
+    isLoading: false
   };
+  componentDidMount() {
+    setTimeout(() => {
+      this.setState({ isLoading: !this.state.isLoading });
+    }, 5000);
+  }
 
   onChangeSearch = e => {
     this.setState({ searchBar: e.target.value });
@@ -66,7 +73,8 @@ class App extends React.Component {
           onChangeRatingSearch={this.onChangeRatingSearch}
           rating={this.state.rating}
         />
-        <MovieContainer
+        <WithLoadingList
+          isLoading={this.state.isLoading}
           toggleModal={this.toggleModal}
           isModalRendred={this.state.isModalRendred}
           onSubmitMovie={this.onSubmitMovie}
