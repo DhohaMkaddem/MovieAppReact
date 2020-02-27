@@ -1,12 +1,8 @@
 import React from "react";
 import MovieCard from "./MovieCard";
+import { connect } from "react-redux";
 
-const MovieList = ({ movieList, rating, searchBar }) => {
-  const search = movie => {
-    if (movie.title.includes(searchBar) || movie.rating === rating) {
-      return true;
-    }
-  };
+const MovieList = ({ movieList, rating, searchBar, toggleModal }) => {
   return (
     <div className="movie-list">
       {searchBar
@@ -18,6 +14,7 @@ const MovieList = ({ movieList, rating, searchBar }) => {
                 title={movie.title}
                 imgPath={movie.imgPath}
                 rating={movie.rating}
+                toggle={toggleModal}
               />
             ))
         : movieList
@@ -28,10 +25,16 @@ const MovieList = ({ movieList, rating, searchBar }) => {
                 title={movie.title}
                 imgPath={movie.imgPath}
                 rating={movie.rating}
+                id={movie.id}
+                toggle={toggleModal}
               />
             ))}
     </div>
   );
 };
 
-export default MovieList;
+const mapStateToProps = state => ({
+  movieList: state.movieList
+});
+
+export default connect(mapStateToProps)(MovieList);
